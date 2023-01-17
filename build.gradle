@@ -2,14 +2,18 @@ plugins {
     id 'org.springframework.boot' version '2.7.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'com.google.cloud.tools.jib' version '3.3.1'
 }
 
 group 'nextstep'
 version '1.0-SNAPSHOT'
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
     mavenCentral()
 }
+
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -26,4 +30,17 @@ dependencies {
 }
 test {
     useJUnitPlatform()
+}
+
+jib {
+    from {
+        image = "adoptopenjdk/openjdk11"
+    }
+    to {
+        image = "idock.daumkakao.io/onboarding2023/gene.y"
+        tags = [ "latest" ]
+    }
+    container {
+        ports = [ "8080" ]
+    }
 }
